@@ -120,12 +120,95 @@ This one is a little simpler
 You'll notice that we've opened the ephemeral ports here too. That is because while mongo only makes request on 27017 it might be asked to respond on any of the ephemeral ports
 db ip: 46.137.69.235
 
+### Moving on to Simple Storage service on S3 
 
+- Creating bucket on S3 
+- Let's run the command 
+  ```
+  aws s3 mb s3://devops-content --region us-west-1
+  ```
+  - **mb stands for make bucket**
+  
+  - click on the link below to view our bucket
+  
+  https://s3.console.aws.amazon.com/s3/buckets/devops-content/?region=us-west-1&tab=overview 
 
+![](https://github.com/spartaglobal/Ansible/blob/lesson1/images/S3-bucket.png)
 
+- Our bucket is empty as expected so time to store our data inside it
 
+**Uploading data to our S3 bucket**
 
+- Transfer/copy files to S3 using awscli from EC2/Ubuntu
+```
+aws s3 cp filename.yml s3://devops-content/
+```
+> Note: Replace the filename and bucketname
+```
+aws s3 cp debug_ec2_launch.yml s3://devops-content/
+```
+**Output**
+```
+upload: ./debug_ec2_launch.yml to s3://devops-content/debug_ec2_launch.yml
+```
+- Let's head over to our S3 on AWS UI and check if our **debug_ec2_launch.yml** is available inside the bucket
+  
+![](../images/uploading-to-s3.png)
+**WOW!!! We can see our file in the cloud storage!**
 
+### Moving onto retrieving data from S3
 
+- Download the file that we just uploaded to our S3 bucket devops-content
+  - Command to download 
+```
+  aws s3 sync
+ ```
+- Retrieve our object from s3 bucket called devops-content and store it in downloads_s3 folder in our host machine
+ ```
+aws s3 sync s3://devops-content/ downloads_s3
+```
+Output:
+```
+download: s3://devops-content/debug_ec2_launch.yml to downloads_s3/debug_ec2_launch.yml
+```
+Verify:
+ ```
+  cd downloads_s3/ 
+ ```
 
+### How can we delete data from our bucket
+- Let's delete single object from our bucket - in our case the file we uploaded earlier 
+```
+aws s3 rm s3://devops-content/debug_ec2_launch.yml
+```
+Output:
+```
+delete: s3://devops-content/debug_ec2_launch.yml
+```
+- Delete all content of S3
+```
+aws s3 rm s3://devops-content --recursive
+```
 
+**Time to clean up**
+
+- Delete the S3 bucket we created
+```
+aws s3 rb s3://devops-content
+```
+- **```rb``` stands for remove bucket**
+- Visit below links
+- https://docs.aws.amazon.com/cli/latest/reference/s3/
+
+- **High Level Commands for S3**
+- https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html#using-s3-commands-delete-buckets
+  
+
+  **Summary:**
+- :white_check_mark: What is AWS S3 and use cases
+- :white_check_mark:  Setting up awscli with required dependencies
+- :white_check_mark:  S3 authentication setup - with aws configure on EC2
+- :white_check_mark:  Create S3 bucket from localhost-cli using awscli
+- :white_check_mark: Uploading content to S3 
+- :white_check_mark: Downloading content from S3
+- :white_check_mark: Deleting Content from S3 using awscli
