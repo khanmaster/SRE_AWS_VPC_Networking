@@ -118,7 +118,7 @@ This one is a little simpler
 |   *  | 0.0.0.0/0   | all      | all        | DENY       | Denies all IPv4 inbound traffic not already handled by a preceding rule (not modifiable).    
 
 You'll notice that we've opened the ephemeral ports here too. That is because while mongo only makes request on 27017 it might be asked to respond on any of the ephemeral ports
-
+db ip: 46.137.69.235
 
 
 
